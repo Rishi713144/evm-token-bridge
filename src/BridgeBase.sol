@@ -12,7 +12,7 @@ interface IBUSDT is IERC20 {
     function burn(address _from, uint256 _amount) external;
 }
 
-contract BridgeETH is Ownable {
+contract BridgeBurnMint is Ownable {
     uint256 public balance;
     address public tokenAddress;
 
@@ -31,6 +31,7 @@ contract BridgeETH is Ownable {
     }
 
     function withdraw(IBUSDT _tokenAddress, uint256 _amount) public {
+        require(address(_tokenAddress) == tokenAddress);
         require(pendingBalance[msg.sender] >= _amount);
         pendingBalance[msg.sender] -= _amount;
         _tokenAddress.mint(msg.sender, _amount);
